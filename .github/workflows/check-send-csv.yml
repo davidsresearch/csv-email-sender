@@ -46,11 +46,11 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: your.address@gmail.com
+          username: davidswelt@gmail.com
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "CSV Files Updated"
           body: "One or more CSV files have been updated. Please find the latest files attached."
-          to: recipient@example.com
-          from: your.address@gmail.com
+          to: david.kohl@juliusbaer.com
+          from: davidswelt@gmail.com
           attachments: rstar.csv,trend.csv,einf.csv
 
