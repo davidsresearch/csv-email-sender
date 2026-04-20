@@ -1,1 +1,56 @@
+name: Send CSV when files change
+
+on:
+  schedule:
+    - cron: '0 7 * * 5'
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: jouchinakajima/program
+          fetch-depth: 2
+
+      - name: Check if CSV files changed
+        id: check_changes
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD -- rstar.csv trend.csv einf.csv)
+          if [ -n "$CHANGED" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Files changed: $CHANGED"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No relevant files changed, skipping email."
+          fi
+
+      - name: Download CSVs
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          curl -L "https://raw.githubusercontent.com/jouchinakajima/program/main/rstar.csv" \
+               -o rstar.csv
+          curl -L "https://raw.githubusercontent.com/jouchinakajima/program/main/trend.csv" \
+               -o trend.csv
+          curl -L "https://raw.githubusercontent.com/jouchinakajima/program/main/einf.csv" \
+               -o einf.csv
+
+      - name: Send email with CSVs
+        if: steps.check_changes.outputs.changed == 'true'
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: your.address@gmail.com
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "CSV Files Updated"
+          body: "One or more CSV files have been updated. Please find the latest files attached."
+          to: recipient@example.com
+          from: your.address@gmail.com
+          attachments: rstar.csv,trend.csv,einf.csv
 
