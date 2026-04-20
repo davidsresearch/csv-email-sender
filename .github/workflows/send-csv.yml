@@ -16,16 +16,20 @@ jobs:
         run: |
           curl -L "https://raw.githubusercontent.com/jouchinakajima/program/main/rstar.csv" \
                -o rstar.csv
+          curl -L "https://raw.githubusercontent.com/jouchinakajima/program/main/einf.csv" \
+               -o einf.csv
+          curl -L "https://raw.githubusercontent.com/jouchinakajima/program/main/trend.csv" \
+               -o trend.csv
 
-      - name: Send email with CSV
+      - name: Send email with CSVs
         uses: dawidd6/action-send-mail@v4
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: davidswelt@gmail.com
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "Weekly rstar.csv"
-          body: "Please find the weekly rstar.csv file attached."
+          subject: "Weekly CSV files"
+          body: "Please find the three weekly CSV files attached."
           to: david.kohl@juliusbaer.com
           from: davidswelt@gmail.com
-          attachments: rstar.csv
+          attachments: rstar.csv,einf.csv,trend.csv
