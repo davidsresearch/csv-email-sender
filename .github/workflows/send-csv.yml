@@ -1,4 +1,4 @@
-name: Send CSV every Friday
+name: Send Three CSV every Friday
 
 on:
   schedule:
