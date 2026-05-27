@@ -15,7 +15,7 @@ jobs:
       - name: Download CSV
         run: |
           curl -L "https://github.com/microsoft/ai-diffusion-report/raw/refs/heads/main/data/AI_Diffusion_Q12026_Update.csv" \
-               -o AI_Diffusion_Q12026_Update.csv
+               -o AI_Diffusion_Update.csv
 
       - name: Send email with CSVs
         uses: dawidd6/action-send-mail@v4
@@ -28,4 +28,4 @@ jobs:
           body: "Please find the weekly AI Diffusion report attached."
           to: david.kohl@juliusbaer.com
           from: davidswelt@gmail.com
-          attachments: AI_Diffusion_Q12026_Update.csv
+          attachments: AI_Diffusion_Update.csv
