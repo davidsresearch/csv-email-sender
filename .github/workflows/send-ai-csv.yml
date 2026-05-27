@@ -1,4 +1,4 @@
-name: Send CSV every Friday
+name: Send AI CSV every Friday
 
 on:
   schedule:
